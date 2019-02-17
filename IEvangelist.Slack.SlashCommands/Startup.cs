@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using IEvangelist.Slack.SlashCommands.Configuration;
+using IEvangelist.Slack.SlashCommands.Interfaces;
+using IEvangelist.Slack.SlashCommands.Services;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +25,12 @@ namespace IEvangelist.Slack.SlashCommands
             {
                 c.SwaggerDoc("v1", new Info { Title = "Slack - Slash Commands", Version = "v1" });
             });
+
+            services.Configure<SlackOptions>(
+                _configuration.GetSection(nameof(SlackOptions)));
+
+            services.AddTransient<IJokeService, JokeService>();
+            services.AddHttpClient();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
