@@ -7,7 +7,7 @@ This ASP.NET Core Web API application is hosted in Azure as an App Service. It i
 
 #### Testing Server
 
-To avoid registering for several new APIs, etc... simply visit the Swagger API that I've conveniently exposed [here](https://slack-slashcommands.azurewebsites.net/swagger). The details for these APIs are listed below.
+To avoid registering for several new APIs, etc... simply visit the Swagger API that I've conveniently exposed [here](https://slack-slashcommands.azurewebsites.net/swagger). The details for these APIs are listed below. Likewise, you are [free to join the slack channel](http://bit.ly/2TYia6g) and try out these commands in slack!
 
 ### APIs
 
