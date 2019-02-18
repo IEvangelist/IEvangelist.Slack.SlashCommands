@@ -46,31 +46,13 @@ namespace IEvangelist.Slack.SlashCommands.Controllers
             var response = await _jokeService.GetJokeAsync();
             return new JsonResult(new
             {
+                response_type = request.Text == "share" ? "in_channel" : "ephemeral",
                 text = response.Value.Joke,
                 attachments = new[]
                 {
                     new { text = _positiveEmoji.RandomElement() }
                 }
             });
-
-            //if (await request.IsValidAsync(Request, _slackOptions.SigningSecret))
-            //{
-            //    var response = await _jokeService.GetJokeAsync();
-            //    return new JsonResult(new
-            //    {
-            //        text = response.Value.Joke,
-            //        attachments = new[]
-            //        {
-            //            new { text = ":rolling_on_the_floor_laughing:" }
-            //        }
-            //    });
-            //}
-
-            //return new JsonResult(new
-            //{
-            //    response_type = "ephemeral",
-            //    text = "Sorry, that didn't work. Please try again."
-            //});
         }
     }
 }
