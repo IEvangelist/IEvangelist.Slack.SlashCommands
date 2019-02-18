@@ -20,10 +20,11 @@ namespace IEvangelist.Slack.SlashCommands.Services
 
         public async Task<string> ShortenUrlAsync(string longUrl)
         {
-            var url = $"shorten?login={_options.Login}&apiKey={_options.ApiKey}&longUrl={longUrl}";
-            var shortUrl = await _client.GetStringAsync(url);
+            var shortUrl = 
+                await _client.GetStringAsync(
+                    $"shorten?login={_options.Login}&apiKey={_options.ApiKey}&longUrl={longUrl}&format=txt");
 
-            return shortUrl;
+            return shortUrl?.TrimEnd('\r', '\n', '\\', '/');
         }
     }
 }
