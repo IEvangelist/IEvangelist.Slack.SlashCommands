@@ -29,11 +29,15 @@ namespace IEvangelist.Slack.SlashCommands
 
             services.Configure<SlackOptions>(_configuration.GetSection(nameof(SlackOptions)));
             services.Configure<OpenWeatherMapOptions>(_configuration.GetSection(nameof(OpenWeatherMapOptions)));
+            services.Configure<BitlyOptions>(_configuration.GetSection(nameof(BitlyOptions)));
 
             services.AddTransient<IJokeService, JokeService>();
 
             services.AddHttpClient<IWeatherService, WeatherService>(
                 client => client.BaseAddress = new Uri("http://api.openweathermap.org/data/2.5/weather"));
+            services.AddHttpClient<IUrlService, UrlService>(
+                client => client.BaseAddress = new Uri("https://api-ssl.bitly.com/v3/"));
+
             services.AddHttpClient();
         }
 
