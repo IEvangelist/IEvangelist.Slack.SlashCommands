@@ -35,11 +35,15 @@ All of these APIs are HTTP Post and expect the `SlackCommandRequest` object.
 
 This endpoint maps to the `/joke` and `/joke share` slash commands.
 
+###### Description
+
 Returns a random nerdy joke about Chuck Norris. There is an optional parameter, type `share` to make the joke public to everyone in the room.
 
 ##### `api/weather`
 
 This endpoint maps to the `/weather [zip-code]` slash command.
+
+###### Description
 
 Given a zip-code will return the current weather, with corresponding emoji.
 
@@ -47,4 +51,11 @@ Given a zip-code will return the current weather, with corresponding emoji.
 
 This endpoint maps to the `/shortenUrl [longUrl]` slash command.
 
+###### Description
+
 Given a long URL, will return a shortened URL - leverages bit.ly API under the covers.
+
+### Resources
+
+ - [Slack Slash Commands - Official Docs](https://api.slack.com/slash-commands)
+ - [Slack Slash Commands with .NET Core Web API](https://medium.com/@scottmichaellandau/slack-slash-commands-with-net-core-web-api-a71395db7504)
