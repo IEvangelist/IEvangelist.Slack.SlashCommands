@@ -7,6 +7,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace IEvangelist.Slack.SlashCommands.Extensions
 {
@@ -15,26 +16,39 @@ namespace IEvangelist.Slack.SlashCommands.Extensions
         internal static async Task<bool> IsValidAsync(
             this SlackCommandRequest request,
             HttpRequest httpRequest,
-            string signingSecret)
+            string signingSecret,
+            ILogger logger)
         {
             if (request is null ||
                 httpRequest is null ||
                 signingSecret is null)
             {
-                return await Task.FromResult(false);
+                logger.LogInformation("Early exit.");
+                return false;
             }
 
             // https://api.slack.com/docs/verifying-requests-from-slack
             var timestamp = httpRequest.Headers["X-Slack-Request-Timestamp"];
+            if (double.TryParse(timestamp.ToString(), out var unix) &&
+                DateTime.Now.Subtract(unix.FromUnixTime()).TotalMinutes > 5)
+            {
+                logger.LogInformation($"Date {unix.FromUnixTime()}");
+                return false;
+            }
+
             var signature = httpRequest.Headers["X-Slack-Signature"].ToString();
 
             var body = await GetRequestBody(httpRequest);
             var payload = Encoding.UTF8.GetBytes($"v0:{timestamp}:{body}");
 
+            logger.LogInformation($"Payload {payload}");
+
             using (var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(signingSecret)))
             {
                 var hash = hmac.ComputeHash(payload);
                 var computedSignature = $"v0={Encoding.UTF8.GetString(hash)}";
+
+                logger.LogInformation($"cs:{computedSignature} vs s:{signature}");
 
                 return string.Equals(signature, computedSignature);
             }
@@ -50,13 +64,10 @@ namespace IEvangelist.Slack.SlashCommands.Extensions
                     return await reader.ReadToEndAsync();
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) when (Debugger.IsAttached)
             {
-                if (Debugger.IsAttached)
-                {
-                    _ = ex.Message;
-                    Debugger.Break();
-                }
+                _ = ex;
+                Debugger.Break();
 
                 throw;
             }

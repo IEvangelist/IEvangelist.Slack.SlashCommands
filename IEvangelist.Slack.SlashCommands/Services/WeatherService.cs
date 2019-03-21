@@ -2,10 +2,10 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using IEvangelist.Slack.SlashCommands.Configuration;
+using IEvangelist.Slack.SlashCommands.Extensions;
 using IEvangelist.Slack.SlashCommands.Interfaces;
 using IEvangelist.Slack.SlashCommands.Models;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 
 namespace IEvangelist.Slack.SlashCommands.Services
 {
@@ -25,7 +25,7 @@ namespace IEvangelist.Slack.SlashCommands.Services
             var url = $"?zip={zipCode},us&appid={_openWeatherMapOptions.Key}&units=imperial";
             var json = await _client.GetStringAsync(url);
 
-            return JsonConvert.DeserializeObject<WeatherResponse>(json);
+            return json.To<WeatherResponse>();
         }
     }
 }
