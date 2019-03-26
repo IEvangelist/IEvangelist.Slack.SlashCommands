@@ -23,10 +23,6 @@ setx BitlyOptions__Login [Your Login Here]
 
 Visual Studio requires a restart after environment variables have been added. 
 
-#### Testing Server
-
-To avoid registering for several new APIs, etc... simply visit the Swagger API that I've conveniently exposed [here](https://slack-slashcommands.azurewebsites.net/swagger). The details for these APIs are listed below. Likewise, you are [free to join the slack channel](http://bit.ly/2TYia6g) and try out these commands in slack!
-
 ### APIs
 
 All of these APIs are HTTP Post and expect the `SlackCommandRequest` object.
